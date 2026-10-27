@@ -1,3 +1,12 @@
+"""
+Pipeline SCADA Live Leak Detection Dashboard
+============================================
+Author: Aditya001-max (kaushikadityaraj001@gmail.com)
+GitHub: https://github.com/Aditya001-max
+Project: Cylindrical Process Pipeline Leak Detection using SCADA and Machine Learning
+"""
+
+import os
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -89,6 +98,9 @@ if "event_log" not in st.session_state:
 # ── Load model ────────────────────────────────────────────────
 @st.cache_resource
 def load_model():
+    if not os.path.exists("model.pkl"):
+        from train_model import train_and_evaluate
+        train_and_evaluate(model_output_path="model.pkl")
     return joblib.load("model.pkl")
 
 model = load_model()
@@ -97,9 +109,12 @@ features = ["pressure_diff", "flow_diff", "pressure_roll_mean", "flow_roll_std"]
 # ── Load & prepare evaluation data ────────────────────────────
 @st.cache_data
 def load_eval_data():
+    if not os.path.exists("pipeline_data_realistic.csv"):
+        from generate_data import generate_pipeline_telemetry
+        generate_pipeline_telemetry(output_processed_csv="pipeline_data_realistic.csv")
     df = pd.read_csv("pipeline_data_realistic.csv")
     # Engineer features if raw columns present
-    if "pressure_in" in df.columns:
+    if "pressure_in" in df.columns and "pressure_diff" not in df.columns:
         df["pressure_diff"]      = df["pressure_in"]  - df["pressure_out"]
         df["flow_diff"]          = df["flow_in"]       - df["flow_out"]
         df["pressure_roll_mean"] = df["pressure_diff"].rolling(5).mean()

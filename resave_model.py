@@ -1,45 +1,18 @@
+"""
+Resave Model Script (Backward Compatibility Wrapper)
+===================================================
+Author: Aditya001-max (kaushikadityaraj001@gmail.com)
+Project: Cylindrical Process Pipeline Leak Detection using SCADA and Machine Learning
 
-import pandas as pd
+This script maintains backwards compatibility for retraining and serializing the model.
+It invokes the unified training pipeline in `train_model.py`.
+"""
 
-import numpy as np
+from train_model import train_and_evaluate
 
-import joblib
-
-import sklearn
-
-from sklearn.ensemble import RandomForestClassifier
-
-from sklearn.model_selection import train_test_split
-
-print('sklearn:', sklearn.__version__)
-
-df = pd.read_csv('pipeline_data_realistic.csv')
-
-df['pressure_diff']      = df['pressure_in'] - df['pressure_out']
-
-df['flow_diff']          = df['flow_in'] - df['flow_out']
-
-df['pressure_roll_mean'] = df['pressure_diff'].rolling(5).mean()
-
-df['flow_roll_std']      = df['flow_diff'].rolling(5).std()
-
-df = df.dropna()
-
-features = ['pressure_diff','flow_diff','pressure_roll_mean','flow_roll_std']
-
-X, y = df[features], df['leak']
-
-X_train, X_test, y_train, y_test = train_test_split(
-
-    X, y, test_size=0.2, stratify=y, random_state=42
-
-)
-
-model = RandomForestClassifier(class_weight='balanced', random_state=42)
-
-model.fit(X_train, y_train)
-
-joblib.dump(model, 'model.pkl')
-
-print('model.pkl resaved successfully')
-
+if __name__ == "__main__":
+    train_and_evaluate(
+        data_path="pipeline_data_realistic.csv",
+        model_output_path="model.pkl",
+        threshold=0.30
+    )

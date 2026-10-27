@@ -1,4 +1,34 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+
+# Caches and checkpoints
+.ipynb_checkpoints/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments
 .env
+.env.local
 .venv/
+env/
+venv/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Operating system artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+*.bak
+*.swp
+
+# Logs and runtime databases
+*.log
