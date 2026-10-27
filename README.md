@@ -165,8 +165,8 @@ pipeline-leak-app/
 ### 2. Clone & Setup Environment
 ```bash
 # Clone the repository
-git clone https://github.com/Aditya001-max/pipeline-leak-app.git
-cd pipeline-leak-app
+git clone https://github.com/Aditya001-max/Cylindrical-Process-Pipeline-Leak-Detection-using-SCADA-and-Machine-Learning.git
+cd Cylindrical-Process-Pipeline-Leak-Detection-using-SCADA-and-Machine-Learning
 
 # Create and activate Python virtual environment
 python -m venv .venv
